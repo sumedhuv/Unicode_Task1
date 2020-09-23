@@ -14,6 +14,8 @@ target 'test' do
 
   pod 'RCTYouTube', :path => '../node_modules/react-native-youtube'
 
+  pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker'
+
   target 'testTests' do
     inherit! :complete
     # Pods for testing

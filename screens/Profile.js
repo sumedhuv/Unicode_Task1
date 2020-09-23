@@ -29,7 +29,7 @@ const Profile = () => {
                  <Text> <Ionicons name="person-circle" size={40} color='teal' />  </Text> 
              </View>
              <View style={{margin:20}}> 
-              <Text style={{fontSize:20}}> {name}</Text>
+              <Text numberOfLines={2} style={{fontSize:20}}> {name}</Text>
               
               </View>
         
@@ -50,8 +50,8 @@ const Profile = () => {
             <View style={{margin:20,marginRight:20}}>
                  <Text> <Ionicons name="mail" size={40} color='teal' />  </Text> 
              </View>
-             <View style={{margin:20}}> 
-              <Text style={{fontSize:20}}> {email}</Text>
+             <View style={{margin:20,width:'80%'}}> 
+              <Text  style={{fontSize:20}}> {email}</Text>
               
               </View>
         
@@ -60,7 +60,7 @@ const Profile = () => {
         <View style={{flexDirection:'row'}}>
             <View style={{margin:20,marginRight:20}}>
                  <Text>  <Ionicons
-                name={gender === 'male' ? 'man' : 'woman'}
+                name={gender === 'male'? 'woman':'man'}
                 size={40}
                 color='teal'
               />  </Text> 

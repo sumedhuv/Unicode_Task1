@@ -5,6 +5,9 @@ import {TextInput, RadioButton, Button} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-community/async-storage';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Signup = () => {
   const Name_1 = 'Name_1';
@@ -20,9 +23,24 @@ const Signup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const[showDate,setShowDate]=useState(false);
-  const dateDisplay = new Date();
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (bday) => {
+    setbday(
+     JSON.stringify(bday).slice(1, 11),
+    );
+    hideDatePicker();
+  };
+  
   const handleSignup =async()=>{
     if (
         name === '' ||
@@ -53,27 +71,7 @@ const Signup = () => {
       }
 
   }
-  const DateSet=(date) =>{
-      try{  if (date === 0) {
-        return '';
-      }
-      date = String(date).split(' ');
-      console.log(date)
-      var str = date[1] + '/' + date[2] + '/' + date[3];
-      return str;}
-      catch(err){
-          console.log(err)
-      }
-   
-  }
-  const handlerChangeDate = (event, selectedDate) => {
-    if (selectedDate !== undefined) {
-      setbday(
-      DateSet(selectedDate ) 
-      );
-      setShowDate(false);
-    }
-  };
+  
 
 
   return (
@@ -106,21 +104,32 @@ const Signup = () => {
               style={styles.input}
               secureTextEntry={true}
             />
-         <View >
-             <TextInput label="Birth Date" onFocus={() => {setShowDate(true);  Keyboard.dismiss(); }} value={bday}/>
-         
+         <View style={{flexDirection:'row',justifyContent:'space-around'}}>
+            
+            <TouchableOpacity onPress={showDatePicker}> 
+            <Ionicons name="calendar" style={{paddingVertical:8,marginRight:5,backgroundColor:'rgb(223, 225, 230)',borderRadius:5}}size={40} color='black' />
+            </TouchableOpacity>
+              <TextInput
+                placeholder="YYYY-MM-DD"
+                style={{width:'85%'}}
+              
+                autoCapitalize="none"
+                keyboardType={'number-pad'}
+                value={bday}
+            
+                onChangeText={(val) =>   setbday(val)}
+              />
+             
+             
          </View>
-        {showDate ? (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={dateDisplay}
-            mode={'date'}
-            display="default"
-            onChange={handlerChangeDate}
-          />
-        ) : (
-          null
-        )}
+       
+         
+      <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
+            />
      </View>
           
           <View style={styles.inputGender}>

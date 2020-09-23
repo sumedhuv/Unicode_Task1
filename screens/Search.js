@@ -39,7 +39,7 @@ if(display===true){
         videos.push(
         <TouchableOpacity key={data[data.indexOf(i)].id.videoId} onPress={()=> navigation.navigate('Video',{ videoId: data[data.indexOf(i)]})}> 
        
-          <View style={{flexDirection:"row",margin:10,marginBottom:0}}>  
+          <View style={{flexDirection:"row",margin:10,marginBottom:1}}>  
             
               <Image 
                source={{uri:`https://i.ytimg.com/vi/${data[data.indexOf(i)].id.videoId}/hqdefault.jpg`}}
@@ -52,12 +52,12 @@ if(display===true){
           
              
                <View style={{
-                 paddingLeft:7
+                 paddingHorizontal:10
                  
                  }}> 
                  <Text style={{
                   fontSize:17,
-                  width:Dimensions.get("screen").width/2,
+                  width:170,
                    color:'black'
                   }}
                   
@@ -78,12 +78,12 @@ if(display===true){
 return (
  
    
-  <View style={{flex:1,alignItems:'center'}}>
+  <View style={styles.container}>
     <View style={styles.inputContainer}> 
     
-    <TextInput style={{borderWidth:2,height:50,borderColor:'black',width:'80%',margin:10}}  onChangeText={(data)=>setSearch(data)}> </TextInput>
+    <TextInput style={styles.textInput}  onChangeText={(data)=>setSearch(data)}> </TextInput>
     <Ionicons
-            style={{color:'black',marginTop:15}}
+            style={styles.search}
             
            name="send"
            size={40}
@@ -91,38 +91,21 @@ return (
            />
            
 </View> 
- 
-
-   
-    
-  {loading ?<ActivityIndicator style={{marginTop:10}} size="large" color="red"/>:null} 
+  {loading ?<ActivityIndicator style={{marginTop:10}} size="large" color="black"/>:null} 
 <ScrollView style={{width:'100%'}}>
   {videos}
   </ScrollView>
-  
-  
   </View>
-     
- 
- 
-  
-  );
+      );
 };
 
 export default Search;
 
 const styles = StyleSheet.create({ 
-  cardContainer: {
-  margin: 15,
-  height:100,
-  flexDirection:'row',
-  
-  marginTop: 10,
-  
-},
 container: {
   flex: 1,
-  backgroundColor: 'skyblue',
+  alignItems:'center',
+  backgroundColor:'lightgrey'
 },
 inputContainer: {
   
@@ -131,10 +114,6 @@ inputContainer: {
   
   
   },
-textInput: {
-  margin: 40,
-}, 
+textInput: {borderWidth:2,height:50,borderColor:'black',width:'80%',margin:10}, 
 
-input: {
-  marginVertical: 10,
-},});
+search: {color:'black',marginTop:15},});
