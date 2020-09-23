@@ -26,7 +26,7 @@ const Profile = () => {
        
         <View style={{flexDirection:'row'}}>
             <View style={{margin:20,marginRight:20}}>
-                 <Text> <Ionicons name="person-circle" size={23} color='teal' />  </Text> 
+                 <Text> <Ionicons name="person-circle" size={40} color='teal' />  </Text> 
              </View>
              <View style={{margin:20}}> 
               <Text style={{fontSize:20}}> {name}</Text>
@@ -37,7 +37,7 @@ const Profile = () => {
         </View>
         <View style={{flexDirection:'row'}}>
             <View style={{margin:20,marginRight:20}}>
-                 <Text> <Ionicons name="calendar" size={23} color='teal' />  </Text> 
+                 <Text> <Ionicons name="calendar" size={40} color='teal' />  </Text> 
              </View>
              <View style={{margin:20}}> 
               <Text style={{fontSize:20}}> {bday}</Text>
@@ -48,7 +48,7 @@ const Profile = () => {
         </View>
         <View style={{flexDirection:'row'}}>
             <View style={{margin:20,marginRight:20}}>
-                 <Text> <Ionicons name="mail" size={23} color='teal' />  </Text> 
+                 <Text> <Ionicons name="mail" size={40} color='teal' />  </Text> 
              </View>
              <View style={{margin:20}}> 
               <Text style={{fontSize:20}}> {email}</Text>
@@ -60,8 +60,8 @@ const Profile = () => {
         <View style={{flexDirection:'row'}}>
             <View style={{margin:20,marginRight:20}}>
                  <Text>  <Ionicons
-                name={gender === 'male' ? 'woman' : 'man'}
-                size={23}
+                name={gender === 'male' ? 'man' : 'woman'}
+                size={40}
                 color='teal'
               />  </Text> 
              </View>

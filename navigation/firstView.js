@@ -1,13 +1,34 @@
 
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 import Profile from '../screens/Profile';
 import Search from '../screens/Search';
+import Video from '../screens/Video';
 import Favourites from '../screens/Favourites';
 import React from 'react';
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+
+
+
 
 
 const Tab = createBottomTabNavigator();
+const Stack= createStackNavigator();
+
+const searchscreen=()=>{
+  return(
+    
+      <Stack.Navigator headerMode="none">
+        <Stack.Screen name= 'Screen' component={Search}/>
+        <Stack.Screen name='Video' component={ Video}/>
+
+  
+      </Stack.Navigator>
+
+    
+  )
+}
 const firstView = () => {
     return (
       <Tab.Navigator
@@ -37,7 +58,7 @@ const firstView = () => {
           
         }}>
         <Tab.Screen name="Profile" component={Profile} />
-        <Tab.Screen name="Search" component={Search} />
+        <Tab.Screen name="Search" component={searchscreen}  />
         <Tab.Screen name="Favourites" component={Favourites} />
        
       </Tab.Navigator>
