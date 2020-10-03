@@ -4,42 +4,80 @@ import { Button,TextInput} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {ScrollView} from 'react-native-gesture-handler';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const Login = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [email_1, setemail_1] = useState('');
-  const [password_1, setPassword1] = useState('');
+  
 
-  const profile = async () => {
-    setemail_1(await AsyncStorage.getItem('Email_1'));
-    setPassword1(await AsyncStorage.getItem('Password_1'));
+  const onLoginPress = () => {
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((response) => {
+        const uid = response.user.uid;
+        console.log('sign in successful')
+        const usersRef = firestore().collection('users');
+        usersRef
+          .doc(uid)
+          .get()
+          .then((firestoreDocument) => {
+            if (!firestoreDocument.exists) {
+              alert('User does not exist anymore.');
+              return;
+            }
+            const user = firestoreDocument.data();
+            navigation.navigate('firstView',{User:user});
+          })
+          .catch((error) => {
+            alert(error);
+          });
+      })
+      .catch((error) => {
+        alert(error);
+      });
   };
-  profile();
 
-  const handleError =()=>{
-    if (email === '' || password === '') {
-        Alert.alert('Error', 'Please fill both email and password', [
-          {text: 'Okay'},
-        ]);
-      } else if (email != email_1) {
-        Alert.alert('Log in Failed', 'Email Address not registered ', [
-          {text: 'Okay'},
-        ]);
-        setEmail('');
-      } else if (password != password_1) {
-        Alert.alert('Login Failed', 'Wrong Password', [
-          {text: 'Okay'},
-        ]);
-        setPassword('');
-      } else {
-        navigation.navigate('firstView');
-        setEmail('');
-        setPassword('');
-      }
+  // const profile = async () => {
+  //   setemail_1(await AsyncStorage.getItem('Email_1'));
+  //   setPassword1(await AsyncStorage.getItem('Password_1'));
+  // };
+  // profile();
 
-  }
+  // const handleError =()=>{
+  //   if (email === '' || password === '') {
+  //       Alert.alert('Error', 'Please fill both email and password', [
+  //         {text: 'Okay'},
+  //       ]);
+  //     } else if (email != email_1) {
+  //       Alert.alert('Log in Failed', 'Email Address not registered ', [
+  //         {text: 'Okay'},
+  //       ]);
+  //       setEmail('');
+  //     } else if (password != password_1) {
+  //       Alert.alert('Login Failed', 'Wrong Password', [
+  //         {text: 'Okay'},
+  //       ]);
+  //       setPassword('');
+  //     } else {
+  //       navigation.navigate('firstView');
+  //       setEmail('');
+  //       setPassword('');
+  //     }
+
+  // }
+  //  const onLoginPress = async (email, password) => {
+  //   try {
+  //     let response = await auth().signInWithEmailAndPassword(email, password)
+  //     if (response && response.user) {
+  //       Alert.alert("Success ✅", "Authenticated successfully")
+  //     }
+  //   } catch (e) {
+  //     console.error(e.message)
+  //   }
+  // }
 
   
   return (
@@ -71,7 +109,7 @@ const Login = () => {
           <Button
             mode="contained"
             color="grey"
-            onPress={handleError}>
+            onPress={onLoginPress}>
             Login
           </Button>
         </View>

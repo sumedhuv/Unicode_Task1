@@ -7,6 +7,7 @@ import Video from '../screens/Video';
 import Favourites from '../screens/Favourites';
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 
 

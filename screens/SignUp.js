@@ -1,20 +1,18 @@
 import React, {useState} from 'react';
-import {View,Text,Alert,KeyboardAvoidingView,ScrollView,Keyboard,StyleSheet
+import {View,Text,Alert,KeyboardAvoidingView,ScrollView,Keyboard,StyleSheet,Image,Dimensions
 } from 'react-native';
-import {TextInput, RadioButton, Button} from 'react-native-paper';
+import {TextInput, RadioButton, Button,Avatar} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-community/async-storage';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import ImagePicker from 'react-native-image-picker';
 
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 const Signup = () => {
-  const Name_1 = 'Name_1';
-  const Email_1 =  'Email_1';
-  const bday_1 = 'bday_1';
-  const Gender_1 = 'Gender_1';
-  const Password_1 = 'Password_1';
   const navigation = useNavigation();
 
 
@@ -23,6 +21,7 @@ const Signup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [picture, setPicture] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
 
@@ -41,43 +40,87 @@ const Signup = () => {
     hideDatePicker();
   };
   
-  const handleSignup =async()=>{
-    if (
-        name === '' ||
-        password === '' ||
-        email === '' ||
-        bday === '' ||
-        gender === ''
-      ) {
-        Alert.alert('Unsuccessful','Please fill all the required details', [
-          {text: 'Okay'},
-        ]);
+  const onRegisterPress = () => {
+    auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((response) => {
+        const uid = response.user.uid;
+
+        let account = {};
+        account.id = response.user.uid;
+        account.gender = gender;
+        account.bday = bday;
+        account.name = name;
+        account.password = password;
+        account.email = email.toLowerCase();
+        account.picture=picture;
+
+        const usersRef = firestore().collection('users');
+        usersRef
+          .doc(uid)
+          .set(account)
+          .then(navigation.navigate('login', {uid: uid}))
+          .catch((error) => {
+            alert(error);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+      });
+      auth()
+       .signOut()
+       .then(() => console.log('User signed out!'));
+  };
+
+ const options = {
+    title: 'Select Picture',
+    mediaType: 'photo',
+    quality:1,
+    maxWidth:500,
+    maxHeight:500
+  
+  };
+  const selectPicture = () => {
+    ImagePicker.showImagePicker(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('Image Error:',response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ');
       } else {
-        try {
-          await AsyncStorage.setItem(Name_1, name);
-          await AsyncStorage.setItem (Email_1, email);
-          await AsyncStorage.setItem(Password_1, password);
-          await AsyncStorage.setItem(bday_1, bday);
-          await AsyncStorage.setItem(Gender_1, gender);
-        } catch (error) {
-          console.log(error);
-        }
-        Alert.alert('Success','You have successfully signed up!', [
-            {text: 'Continue'},
-          ]);
-       
-
-        navigation.goBack();
+        
+        setPicture( response.uri);
+        console.log(picture);
       }
-
-  }
+    });
+  };
   
 
 
   return (
+    
     <ScrollView style={styles.container}>
+      <TouchableOpacity
+      
+       onPress={selectPicture}>
+          {picture === '' ? (
+           <Avatar.Image
+           size={200}
+           style={{marginLeft:Dimensions.get('window').width/5,marginTop:10}}
+           source={require('./sample.png')}
+         /> 
+          ) : (
+           
+               <Avatar.Image style={{marginLeft:Dimensions.get('window').width/5,marginTop:10}} size={200} source={{uri:picture}} /> 
+             
+          )}
+        </TouchableOpacity>
       <KeyboardAvoidingView>
         <View style={styles.container}>
+        
+
           <View style={styles.inputContainer}>
                  
          
@@ -156,7 +199,7 @@ const Signup = () => {
             <Button
              mode="contained"
               color="teal"
-              onPress={handleSignup}>
+              onPress={onRegisterPress}>
               Sign-up
             </Button>
           </View>
@@ -194,5 +237,13 @@ const styles = StyleSheet.create({
  
     
   },
+  profile:{
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 80,
+    width: 80,
+    borderRadius: 40,
+  }
+  
  
 });

@@ -9,7 +9,8 @@ const Video =({navigation,route})=>{
    const title= route.params.videoId.snippet.title;
    const description = route.params.videoId.snippet.description;
    
-    return(<View>
+    return(
+    <View>
          <YouTube
     apiKey="AIzaSyB2ecKMxwXrxonR9-R-LMpDEBVP67PqJJc"
     videoId= {videoId.toString()}// The YouTube video ID

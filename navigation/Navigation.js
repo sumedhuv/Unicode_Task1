@@ -18,7 +18,7 @@ const Navigation = () => {
       <Stack.Navigator headerMode="none" >
         <Stack.Screen name="login" component={Login} />
         <Stack.Screen name="signup" component={Signup} />
-        <Stack.Screen name="firstView" component={firstView} independent={true} />
+        <Stack.Screen name="firstView" component={firstView}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

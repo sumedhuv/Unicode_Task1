@@ -34,8 +34,6 @@ const fetchData= ()=>{
 
 if(display===true){
     for(let i of data){
-      // console.log(data[data.indexOf(i)])
-      // ()=> loadVideo(data[data.indexOf(i)].id.videoId)
         videos.push(
         <TouchableOpacity key={data[data.indexOf(i)].id.videoId} onPress={()=> navigation.navigate('Video',{ videoId: data[data.indexOf(i)]})}> 
        
@@ -47,7 +45,8 @@ if(display===true){
                 width:'45%',
                 borderWidth:1,
                 borderColor:'black',
-                height:100
+                height:50,
+              
                 }} />
           
              
