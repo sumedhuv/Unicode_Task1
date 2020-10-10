@@ -31,6 +31,7 @@ local.properties
 
 # node.js
 #
+android/java_pid9544.hprof
 node_modules/
 npm-debug.log
 yarn-error.log

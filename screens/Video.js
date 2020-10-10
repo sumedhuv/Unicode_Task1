@@ -14,7 +14,7 @@ const Video =({navigation,route})=>{
          <YouTube
     apiKey="AIzaSyB2ecKMxwXrxonR9-R-LMpDEBVP67PqJJc"
     videoId= {videoId.toString()}// The YouTube video ID
-    play={true}
+    
     
    
     

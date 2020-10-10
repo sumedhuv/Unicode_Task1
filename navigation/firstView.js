@@ -23,6 +23,7 @@ const searchscreen=()=>{
       <Stack.Navigator headerMode="none">
         <Stack.Screen name= 'Screen' component={Search}/>
         <Stack.Screen name='Video' component={ Video}/>
+        <Stack.Screen name="Favourites" component={Favourites} />
 
   
       </Stack.Navigator>

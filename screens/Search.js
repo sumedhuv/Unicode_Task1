@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import React,{useState} from 'react';
-import {StyleSheet,ScrollView, Text,TextInput,Button, View,Image,Dimensions,ActivityIndicator,TouchableOpacity} from 'react-native';
+import {StyleSheet,ScrollView, Text,TextInput,Button, View,Image,Dimensions,ActivityIndicator,TouchableOpacity,Alert} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import firestore from '@react-native-firebase/firestore';
 
 const Search = () => {
   
@@ -29,13 +30,44 @@ const fetchData= ()=>{
 
 
 }
+const FavouritesHandler= (vimeo)=>{
+  const uid= vimeo.id.videoId;
+  const Favref = firestore().collection('favourites');
+  Favref
+  .doc(uid)
+  .set(vimeo)
+  .then(navigation.navigate('Favourites', {uid: uid}))
+  .catch((error) => {
+    alert(error);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+  
+
+
+}
   
 
 
 if(display===true){
     for(let i of data){
         videos.push(
-        <TouchableOpacity key={data[data.indexOf(i)].id.videoId} onPress={()=> navigation.navigate('Video',{ videoId: data[data.indexOf(i)]})}> 
+        <TouchableOpacity key={data[data.indexOf(i)].id.videoId} onLongPress={()=> 
+          Alert.alert(
+            "Favourites",
+            "Add to Favourites?",
+            [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+              },
+              { text: "Yes", onPress: () => { const vimeo=data[data.indexOf(i)];FavouritesHandler(vimeo)}}
+            ],
+            { cancelable: false }
+          )
+       } onPress={()=> navigation.navigate('Video',{ videoId: data[data.indexOf(i)]})}> 
        
           <View style={{flexDirection:"row",margin:10,marginBottom:1}}>  
             
@@ -45,7 +77,7 @@ if(display===true){
                 width:'45%',
                 borderWidth:1,
                 borderColor:'black',
-                height:50,
+                height:100,
               
                 }} />
           
